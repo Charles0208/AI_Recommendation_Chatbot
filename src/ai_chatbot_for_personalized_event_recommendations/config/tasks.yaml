@@ -3,8 +3,7 @@ initiate_conversation_task:
   description: Based on the conversation so far and the latest message {user_input},
     determine whether the user is making a new event search or 
     referring to a previous recommendation. If it's a new query, extract relevant filters
-    such as genre, performer, date and time, price, popularity, and size of the event 
-    from this user input {user_input}. If it’s a follow-up (e.g. “tell me more about the Knicks game”),
+    such as genre, performer, date and time, price, popularity, and size of the event. If it’s a follow-up (e.g. “tell me more about the Knicks game”),
     identify the referenced event.
   expected_output: If new query, a set of user preferences including genre, performer, date and
     time, price, popularity, and size of the event. If follow-up, event title or identifier for deeper lookup
