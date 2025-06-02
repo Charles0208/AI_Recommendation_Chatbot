@@ -1,0 +1,66 @@
+---
+initiate_conversation_task:
+  description: Based on the conversation so far and the latest message {user_input},
+    determine whether the user is making a new event search or 
+    referring to a previous recommendation. If it's a new query, extract relevant filters
+    such as genre, performer, date and time, price, popularity, and size of the event 
+    from this user input {user_input}. If it’s a follow-up (e.g. “tell me more about the Knicks game”),
+    identify the referenced event.
+  expected_output: If new query, a set of user preferences including genre, performer, date and
+    time, price, popularity, and size of the event. If follow-up, event title or identifier for deeper lookup
+  async_execution: false
+  agent: conversation_specialist
+perform_web_search_task:
+  description: Conduct web searches to find available tickets for events based on
+    user preferences.
+  expected_output: A list of websites with available tickets for the specified events.
+  async_execution: false
+  agent: web_search_expert
+  context:
+  - initiate_conversation_task
+scrape_ticket_information_task:
+  description: Extract detailed ticket information from the identified websites.
+  expected_output: Comprehensive ticket details including event name, date, location,
+    and price.
+  async_execution: false
+  agent: scraping_specialist
+  context:
+  - perform_web_search_task
+validate_results_task:
+  description: Check the reasonability and relevance of the retrieved ticket results.
+  expected_output: A validated list of reasonable and relevant ticket options, including
+    event name, date, location, and price.
+  async_execution: false
+  agent: reasonability_checker
+  context:
+  - scrape_ticket_information_task
+rank_results_task:
+  description: Rank the top 5 event results based on relevance to user preferences.
+  expected_output: A ranked list of the top 5 events with available tickets, tailored
+    to user preferences. The list should include the event name, date, location, and price.
+  async_execution: false
+  agent: ranking_specialist
+  context:
+  - validate_results_task
+present_results_task:
+  description: Present the ranked event results to the user in natural language.
+  expected_output: A natural language summary of the top 5 recommended events with
+    available tickets. Display the results as bullet points, including the event name, date, time, location,
+    price, a link to the ticket page, and a short description of the event. The specialist
+    should ask the user if they would like more information on any of the events.
+  async_execution: false
+  agent: conversation_specialist
+  context:
+  - rank_results_task
+fetch_event_details_task:
+  description: >
+    Given the user's follow-up question and the past list of recommended events,
+    identify which specific event the user is referring to (e.g., “Tell me more about the Knicks game”),
+    and retrieve additional details such as time, location, performers, price range, or seating.
+  expected_output: >
+    A natural-language summary of the selected event with additional detail,
+    suitable for responding directly to the user.
+  async_execution: false
+  agent: scraping_specialist
+  context:
+  - present_results_task

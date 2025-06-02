@@ -1,0 +1,23 @@
+[project]
+name = "ai_chatbot_for_personalized_event_recommendations"
+version = "0.1.0"
+description = "ai_chatbot_for_personalized_event_recommendations using crewAI"
+authors = [{ name = "Your Name", email = "you@example.com" }]
+requires-python = ">=3.10,<3.13"
+dependencies = [
+    "crewai[tools]>=0.119.0,<1.0.0"
+]
+
+[project.scripts]
+ai_chatbot_for_personalized_event_recommendations = "ai_chatbot_for_personalized_event_recommendations.main:run"
+run_crew = "ai_chatbot_for_personalized_event_recommendations.main:run"
+train = "ai_chatbot_for_personalized_event_recommendations.main:train"
+replay = "ai_chatbot_for_personalized_event_recommendations.main:replay"
+test = "ai_chatbot_for_personalized_event_recommendations.main:test"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.crewai]
+type = "crew"
