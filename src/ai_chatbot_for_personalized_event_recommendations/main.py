@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 import sys
+import time
 from ai_chatbot_for_personalized_event_recommendations.crew import AiChatbotForPersonalizedEventRecommendationsCrew
 
 # This main file is intended to be a way for your to run your
@@ -24,7 +25,10 @@ def run():
         inputs = {"user_input": user_input}
 
         try:
+            start = time.time()
             result = crew.kickoff(inputs=inputs)
+            end = time.time()
+            print(f"🔁 Total runtime: {end - start:.2f} seconds")
             print("Bot:", result, "\n")
         except Exception as e:
             print(f"Error: {e}")

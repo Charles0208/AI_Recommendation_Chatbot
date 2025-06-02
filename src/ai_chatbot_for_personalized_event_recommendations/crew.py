@@ -1,3 +1,4 @@
+import time
 from crewai import Agent, Crew, Process, Task
 from crewai.project import CrewBase, agent, crew, task
 from crewai_tools import SerperDevTool
@@ -17,78 +18,54 @@ class AiChatbotForPersonalizedEventRecommendationsCrew():
     def web_search_expert(self) -> Agent:
         return Agent(
             config=self.agents_config['web_search_expert'],
-            tools=[SerperDevTool()],
+            tools=[SerperDevTool(), ScrapeWebsiteTool()],
+        )
+        
+    @agent
+    def filtering_and_ranking_specialist(self) -> Agent:
+        return Agent(
+            config=self.agents_config['filtering_and_ranking_specialist'],
         )
 
     @agent
     def scraping_specialist(self) -> Agent:
         return Agent(
             config=self.agents_config['scraping_specialist'],
-            tools=[ScrapeWebsiteTool()],
-        )
-
-    @agent
-    def reasonability_checker(self) -> Agent:
-        return Agent(
-            config=self.agents_config['reasonability_checker'],
-        )
-
-    @agent
-    def ranking_specialist(self) -> Agent:
-        return Agent(
-            config=self.agents_config['ranking_specialist'],
+            tools=[ScrapeWebsiteTool(), SerperDevTool()],
         )
 
 
     @task
-    def initiate_conversation_task(self) -> Task:
+    def conversation_task(self) -> Task:
         return Task(
-            config=self.tasks_config['initiate_conversation_task'],
-            tools=[],
+            config=self.tasks_config['conversation_task'],
         )
 
     @task
-    def perform_web_search_task(self) -> Task:
+    def fetch_events_data_task(self) -> Task:
         return Task(
-            config=self.tasks_config['perform_web_search_task'],
-            tools=[SerperDevTool()],
+            config=self.tasks_config['fetch_events_data_task'],
+            tools=[SerperDevTool(), ScrapeWebsiteTool()],
         )
 
     @task
-    def scrape_ticket_information_task(self) -> Task:
+    def filter_and_rank_task(self) -> Task:
         return Task(
-            config=self.tasks_config['scrape_ticket_information_task'],
-            tools=[ScrapeWebsiteTool()],
-        )
-
-    @task
-    def validate_results_task(self) -> Task:
-        return Task(
-            config=self.tasks_config['validate_results_task'],
-            tools=[],
-        )
-
-    @task
-    def rank_results_task(self) -> Task:
-        return Task(
-            config=self.tasks_config['rank_results_task'],
-            tools=[],
+            config=self.tasks_config['filter_and_rank_task'],
         )
 
     @task
     def present_results_task(self) -> Task:
         return Task(
             config=self.tasks_config['present_results_task'],
-            tools=[],
         )
-        
+
     @task
     def fetch_event_details_task(self) -> Task:
         return Task(
             config=self.tasks_config['fetch_event_details_task'],
             tools=[ScrapeWebsiteTool(), SerperDevTool()],
         )
-
 
     @crew
     def crew(self) -> Crew:
@@ -98,5 +75,5 @@ class AiChatbotForPersonalizedEventRecommendationsCrew():
             tasks=self.tasks, # Automatically created by the @task decorator
             process=Process.sequential,
             memory=True, # Enables short-term, long-term, and entity memory
-            verbose=True,
+            verbose=False,
         )
