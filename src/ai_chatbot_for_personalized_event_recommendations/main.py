@@ -28,7 +28,7 @@ def run():
             start = time.time()
             result = crew.kickoff(inputs=inputs)
             end = time.time()
-            print(f"🔁 Total runtime: {end - start:.2f} seconds")
+            print(f"\n===🔁 Total runtime: {end - start:.2f} seconds===\n")
             print("Bot:", result, "\n")
         except Exception as e:
             print(f"Error: {e}")
