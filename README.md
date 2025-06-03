@@ -20,7 +20,7 @@ uv tool install crewai
 
 If this is your first time running this command, there will be a message to set the path to the package you just install. Follow the message.
 
-Now, navigate to the project directory AI_Recommendation_Chatbot
+Now, clone the repo and navigate to the project directory AI_Recommendation_Chatbot
 
 (Optional) Lock the dependencies and install them by using the CLI command:
 
@@ -31,7 +31,7 @@ crewai install
 
 **Add your `OPENAI_API_KEY` into the `.env` file**
 
-Create a .env file in the base of the project directory. Add your api keys. An example is shown below:
+Create a .env file in the base of the project directory. Add your api keys. An example .env file is shown below:
 
 ```bash
 MODEL=gpt-4.1-mini # Found this was best openai model
