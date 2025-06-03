@@ -5,8 +5,8 @@ from crewai_tools import SerperDevTool
 from crewai_tools import ScrapeWebsiteTool
 
 @CrewBase
-class AiChatbotForPersonalizedEventRecommendationsCrew():
-    """AiChatbotForPersonalizedEventRecommendations crew"""
+class AI_Recommendation_ChatbotCrew():
+    """AI_Recommendation_Chatbot crew"""
 
     @agent
     def conversation_specialist(self) -> Agent:
@@ -69,7 +69,7 @@ class AiChatbotForPersonalizedEventRecommendationsCrew():
 
     @crew
     def crew(self) -> Crew:
-        """Creates the AiChatbotForPersonalizedEventRecommendations crew"""
+        """Creates the AI_Recommendation_Chatbot crew"""
         return Crew(
             agents=self.agents, # Automatically created by the @agent decorator
             tasks=self.tasks, # Automatically created by the @task decorator

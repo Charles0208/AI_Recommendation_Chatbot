@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 import sys
 import time
-from ai_chatbot_for_personalized_event_recommendations.crew import AiChatbotForPersonalizedEventRecommendationsCrew
+from AI_Recommendation_Chatbot.crew import AI_Recommendation_ChatbotCrew
 
 # This main file is intended to be a way for your to run your
 # crew locally, so refrain from adding unnecessary logic into this file.
@@ -13,7 +13,7 @@ def run():
     Run the crew with the full conversation.
     """
     print("Welcome to the chatbot! Type 'exit' to stop.")
-    crew_instance = AiChatbotForPersonalizedEventRecommendationsCrew()
+    crew_instance = AI_Recommendation_ChatbotCrew()
     crew = crew_instance.crew()
 
     while True:
@@ -41,7 +41,7 @@ def run_simple():
     inputs = {
         "user_input": "I'm looking for concerts or NBA games in NYC this weekend. Preferably something popular or headlined by a major artist."
     }
-    AiChatbotForPersonalizedEventRecommendationsCrew().crew().kickoff(inputs=inputs)
+    AI_Recommendation_ChatbotCrew().crew().kickoff(inputs=inputs)
 
 
 def train():
@@ -52,7 +52,7 @@ def train():
         
     }
     try:
-        AiChatbotForPersonalizedEventRecommendationsCrew().crew().train(n_iterations=int(sys.argv[1]), filename=sys.argv[2], inputs=inputs)
+        AI_Recommendation_ChatbotCrew().crew().train(n_iterations=int(sys.argv[1]), filename=sys.argv[2], inputs=inputs)
 
     except Exception as e:
         raise Exception(f"An error occurred while training the crew: {e}")
@@ -62,7 +62,7 @@ def replay():
     Replay the crew execution from a specific task.
     """
     try:
-        AiChatbotForPersonalizedEventRecommendationsCrew().crew().replay(task_id=sys.argv[1])
+        AI_Recommendation_ChatbotCrew().crew().replay(task_id=sys.argv[1])
 
     except Exception as e:
         raise Exception(f"An error occurred while replaying the crew: {e}")
@@ -75,7 +75,7 @@ def test():
         
     }
     try:
-        AiChatbotForPersonalizedEventRecommendationsCrew().crew().test(n_iterations=int(sys.argv[1]), openai_model_name=sys.argv[2], inputs=inputs)
+        AI_Recommendation_ChatbotCrew().crew().test(n_iterations=int(sys.argv[1]), openai_model_name=sys.argv[2], inputs=inputs)
 
     except Exception as e:
         raise Exception(f"An error occurred while testing the crew: {e}")

@@ -1,19 +1,19 @@
 [project]
-name = "ai_chatbot_for_personalized_event_recommendations"
+name = "AI_Recommendation_Chatbot"
 version = "0.1.0"
-description = "ai_chatbot_for_personalized_event_recommendations using crewAI"
-authors = [{ name = "Your Name", email = "you@example.com" }]
+description = "AI_Recommendation_Chatbot using crewAI"
+authors = [{ name = "Charles Jiang", email = "cjiang0208@gmail.com" }]
 requires-python = ">=3.10,<3.13"
 dependencies = [
     "crewai[tools]>=0.119.0,<1.0.0"
 ]
 
 [project.scripts]
-ai_chatbot_for_personalized_event_recommendations = "ai_chatbot_for_personalized_event_recommendations.main:run"
-run_crew = "ai_chatbot_for_personalized_event_recommendations.main:run"
-train = "ai_chatbot_for_personalized_event_recommendations.main:train"
-replay = "ai_chatbot_for_personalized_event_recommendations.main:replay"
-test = "ai_chatbot_for_personalized_event_recommendations.main:test"
+AI_Recommendation_Chatbot = "AI_Recommendation_Chatbot.main:run"
+run_crew = "AI_Recommendation_Chatbot.main:run"
+train = "AI_Recommendation_Chatbot.main:train"
+replay = "AI_Recommendation_Chatbot.main:replay"
+test = "AI_Recommendation_Chatbot.main:test"
 
 [build-system]
 requires = ["hatchling"]
