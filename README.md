@@ -1,6 +1,6 @@
-# AiChatbotForPersonalizedEventRecommendations Crew
+# AI_Recommendation_Chatbot Crew
 
-Welcome to the AiChatbotForPersonalizedEventRecommendations Crew project, powered by [crewAI](https://crewai.com). This template is designed to help you set up a multi-agent AI system with ease, leveraging the powerful and flexible framework provided by crewAI. Our goal is to enable your agents to collaborate effectively on complex tasks, maximizing their collective intelligence and capabilities.
+Welcome to the AI_Recommendation_Chatbot Crew project, powered by [crewAI](https://crewai.com). This template is designed to help you set up a multi-agent AI system with ease, leveraging the powerful and flexible framework provided by crewAI. Our goal is to enable your agents to collaborate effectively on complex tasks, maximizing their collective intelligence and capabilities.
 
 ## Installation
 
@@ -12,9 +12,18 @@ First, if you haven't already, install uv:
 pip install uv
 ```
 
-Next, navigate to your project directory and install the dependencies:
+Next, install crewai:
+
+```bash
+uv tool install crewai
+```
+
+If this is your first time running this command, there will be a message to set the path to the package you just install. Follow the message.
+
+Now, navigate to the project directory AI_Recommendation_Chatbot
 
 (Optional) Lock the dependencies and install them by using the CLI command:
+
 ```bash
 crewai install
 ```
@@ -22,10 +31,13 @@ crewai install
 
 **Add your `OPENAI_API_KEY` into the `.env` file**
 
-- Modify `src/ai_chatbot_for_personalized_event_recommendations/config/agents.yaml` to define your agents
-- Modify `src/ai_chatbot_for_personalized_event_recommendations/config/tasks.yaml` to define your tasks
-- Modify `src/ai_chatbot_for_personalized_event_recommendations/crew.py` to add your own logic, tools and specific args
-- Modify `src/ai_chatbot_for_personalized_event_recommendations/main.py` to add custom inputs for your agents and tasks
+Create a .env file in the base of the project directory. Add your api keys. An example is shown below:
+
+```bash
+MODEL=gpt-4.1-mini # Found this was best openai model
+OPENAI_API_KEY=your-openai-api-key
+SERPER_API_KEY=your-serer-api-key
+```
 
 ## Running the Project
 
@@ -35,17 +47,28 @@ To kickstart your crew of AI agents and begin task execution, run this from the 
 $ crewai run
 ```
 
-This command initializes the ai_chatbot_for_personalized_event_recommendations Crew, assembling the agents and assigning them tasks as defined in your configuration.
+This command initializes the AI_Recommendation_Chatbot Crew, assembling the agents and assigning them tasks as defined in your configuration.
 
-This example, unmodified, will run the create a `report.md` file with the output of a research on LLMs in the root folder.
+If you would like the terminal to output a detailed log of the tasks and the agents' reasoning, set verbose=True in crew.py:crew
 
-## Understanding Your Crew
+## Understanding the Crew
 
-The ai_chatbot_for_personalized_event_recommendations Crew is composed of multiple AI agents, each with unique roles, goals, and tools. These agents collaborate on a series of tasks, defined in `config/tasks.yaml`, leveraging their collective skills to achieve complex objectives. The `config/agents.yaml` file outlines the capabilities and configurations of each agent in your crew.
+The AI_Recommendation_Chatbot Crew is composed of multiple AI agents, each with unique roles, goals, and tools. These agents collaborate on a series of tasks, defined in `config/tasks.yaml`, leveraging their collective skills to achieve complex objectives. The `config/agents.yaml` file outlines the capabilities and configurations of each agent in your crew.
+
+## Modifying the chatbot
+
+- Modify `src/AI_Recommendation_Chatbot/config/agents.yaml` to modify agents
+- Modify `src/AI_Recommendation_Chatbot/config/tasks.yaml` to modify tasks
+- Modify `src/AI_Recommendation_Chatbot/crew.py` to add logic, tools and specific args
+- Modify `src/AI_Recommendation_Chatbot/main.py` to add custom inputs for agents and tasks
+
+## Online resource
+
+For a video tutorial of the above steps, use this playlist: https://youtube.com/playlist?list=PLpkzjZ2JCjKJYqKavdl87BWotEaqbzjRt&si=dGBPnn2CBr94ll4p
 
 ## Support
 
-For support, questions, or feedback regarding the AiChatbotForPersonalizedEventRecommendations Crew or crewAI.
+For support, questions, or feedback regarding the AI_Recommendation_Chatbot Crew or crewAI.
 - Visit our [documentation](https://docs.crewai.com)
 - Reach out to us through our [GitHub repository](https://github.com/joaomdmoura/crewai)
 - [Join our Discord](https://discord.com/invite/X4JWnZnxPb)
