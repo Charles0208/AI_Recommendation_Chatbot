@@ -20,20 +20,13 @@ class AI_Recommendation_ChatbotCrew():
             config=self.agents_config['web_search_expert'],
             tools=[SerperDevTool(), ScrapeWebsiteTool()],
         )
-        
-    @agent
-    def filtering_and_ranking_specialist(self) -> Agent:
-        return Agent(
-            config=self.agents_config['filtering_and_ranking_specialist'],
-        )
 
-    @agent
-    def scraping_specialist(self) -> Agent:
-        return Agent(
-            config=self.agents_config['scraping_specialist'],
-            tools=[ScrapeWebsiteTool(), SerperDevTool()],
-        )
-
+    # @agent
+    # def scraping_specialist(self) -> Agent:
+    #     return Agent(
+    #         config=self.agents_config['scraping_specialist'],
+    #         tools=[SerperDevTool(), ScrapeWebsiteTool()],
+    #     )
 
     @task
     def conversation_task(self) -> Task:
@@ -42,30 +35,24 @@ class AI_Recommendation_ChatbotCrew():
         )
 
     @task
-    def fetch_events_data_task(self) -> Task:
+    def search_and_present_task(self) -> Task:
         return Task(
-            config=self.tasks_config['fetch_events_data_task'],
+            config=self.tasks_config['search_and_present_task'],
             tools=[SerperDevTool(), ScrapeWebsiteTool()],
         )
 
-    @task
-    def filter_and_rank_task(self) -> Task:
-        return Task(
-            config=self.tasks_config['filter_and_rank_task'],
-        )
-
-    @task
-    def present_results_task(self) -> Task:
-        return Task(
-            config=self.tasks_config['present_results_task'],
-        )
-
-    @task
-    def fetch_event_details_task(self) -> Task:
-        return Task(
-            config=self.tasks_config['fetch_event_details_task'],
-            tools=[ScrapeWebsiteTool(), SerperDevTool()],
-        )
+    # @task
+    # def fetch_event_details_task(self) -> Task:
+    #     return Task(
+    #         config=self.tasks_config['fetch_event_details_task'],
+    #         tools=[ScrapeWebsiteTool(), SerperDevTool()],
+    #         expected_output=self.tasks_config['fetch_event_details_task']['expected_output'],
+    #         input_schema={
+    #             "user_input": str,
+    #             "recommendations": list,
+    #             "preferences": dict
+    #         }
+    # )
 
     @crew
     def crew(self) -> Crew:

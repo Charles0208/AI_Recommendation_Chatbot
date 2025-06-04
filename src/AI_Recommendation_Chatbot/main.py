@@ -1,12 +1,21 @@
 #!/usr/bin/env python
 import sys
 import time
+import json
 from AI_Recommendation_Chatbot.crew import AI_Recommendation_ChatbotCrew
 
 # This main file is intended to be a way for your to run your
 # crew locally, so refrain from adding unnecessary logic into this file.
 # Replace with inputs you want to test with, it will automatically
 # interpolate any tasks and agents information
+
+# Memory/session store for preferences and recommendations
+MAX_HISTORY = 20
+session_memory = {
+    "preferences": [],
+    "recommendations": {},
+    "conversation_history": []
+}
 
 def run():
     """
@@ -15,21 +24,36 @@ def run():
     print("Welcome to the chatbot! Type 'exit' to stop.")
     crew_instance = AI_Recommendation_ChatbotCrew()
     crew = crew_instance.crew()
-
+    
     while True:
         user_input = input("User: ")
         if user_input.lower() == "exit":
             print("Goodbye!")
             break
 
-        inputs = {"user_input": user_input}
+        inputs = {
+            "user_input": user_input, 
+            "recommendations":session_memory.get("recommendations"), 
+            "preferences":session_memory.get("preferences"),
+            "conversation_history": session_memory["conversation_history"],
+        }
 
         try:
             start = time.time()
             result = crew.kickoff(inputs=inputs)
+            raw_output_str = dict(result)['raw']
+            result = json.loads(raw_output_str)
+
+            session_memory["preferences"] = result["preferences"]
+            session_memory["conversation_history"].append({"role": "user", "message": user_input})
+            session_memory["conversation_history"].append({"role": "bot", "message": result["output"]})
+            session_memory["conversation_history"] = session_memory["conversation_history"][-MAX_HISTORY:]
+            if result['intention'] == 'recommendation':
+                session_memory["recommendations"] = result["output"]
+            
             end = time.time()
             print(f"\n===🔁 Total runtime: {end - start:.2f} seconds===\n")
-            print("Bot:", result, "\n")
+            print("Bot:", result['output'], "\n")
         except Exception as e:
             print(f"Error: {e}")
     
@@ -72,10 +96,13 @@ def test():
     Test the crew execution and returns the results.
     """
     inputs = {
-        
+            "user_input": "I'm looking for concerts or NBA games in NYC this weekend. Preferably something popular or headlined by a major artist.", 
+            "recommendations":session_memory.get("recommendations"), 
+            "preferences":session_memory.get("preferences"),
+            "conversation_history": session_memory["conversation_history"],
     }
     try:
-        AI_Recommendation_ChatbotCrew().crew().test(n_iterations=int(sys.argv[1]), openai_model_name=sys.argv[2], inputs=inputs)
+        AI_Recommendation_ChatbotCrew().crew().test(n_iterations=int(sys.argv[1]), eval_llm=sys.argv[2], inputs=inputs)
 
     except Exception as e:
         raise Exception(f"An error occurred while testing the crew: {e}")
@@ -99,3 +126,5 @@ if __name__ == "__main__":
     else:
         print(f"Unknown command: {command}")
         sys.exit(1)
+
+
