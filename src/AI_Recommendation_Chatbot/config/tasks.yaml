@@ -3,41 +3,86 @@ conversation_task:
   description: >
     Based on the conversation so far "{conversation_history}" and the latest message "{user_input}",
     determine whether the user is asking for a recommendation of events or 
-    looking for more information on a specific event. Extract relevant filters
-    such as genre, performer, date and time, price, popularity, event size, and additional context.
-    If it’s a follow-up, identify the referenced event.
+    looking for more information on a specific event.
+    Extract relevant filters such as genre, performer, start date, end date, price, popularity, event size, and additional context.
+    If it’s a follow-up, identify the referenced specific event.
+    To determine time, the current time is {date_time}. If the user doesn't give exact dates, infer the start and end date.
+    If the user doesn't give any information about time, set start date to today and end date to a month from today.
   expected_output: >
     You should return a python dictionary with the following keys:
     - 'intention': either 'recommendation' or 'more_info'
-    - 'preferences': a dictionary of user preferences. This should include: event type, location, 
-    date and time, genre, performer, price, popularity, event size, and additional context.
+    - 'preferences': a dictionary of user preferences: {
+        'event_type':,
+        'location':,
+        'start_date':"YYYY-MM-DD",
+        'end_date':"YYYY-MM-DD",
+        'genre':,
+        'performer':,
+        'price':,
+        'popularity':,
+        'event size':,
+        'additional context':
+      }
     - 'referenced_event': the name or identifier of a specific event (if applicable)
     Preferences will be constantly updated based on the conversation. If the user is following up, return a string or 
     identifier referring to the event being referenced (e.g., "Knicks game").
   async_execution: false
   agent: conversation_specialist
 
-search_and_present_task:
+### MODIFY THIS TO SEARCH OUR DATA LAKE INSTEAD OF GOOGLE
+### Searches, scrapes, ranks, and outputs most relevant PERFORMERS/GROUPS from Google
+performer_search_task:
   description: >
-    Based on the user's intention:
-    - If 'recommendation': Use the extracted preferences to conduct a web search, extract ticket info,
-    validate, rank, and present the top 5 events in natural language with bullet points including event name,
-    date, location, price, a link, and short description.
-    - If 'more_info': Use the referenced event name from the conversation, and if relevant, the stored recommendation list "{recommendations}"
-      and preferences "{preferences}" to identify the event. Conduct a focused web search and scraping to provide
-      detailed event information (date, time, venue, performers, seating, and price breakdown).
+    If the user states a specific performer/group, identify the performer. Otherwise, use the extracted preferences to conduct a web search,
+    validate, rank, and list the best perfomers/groups for the user (e.g. "Kanye West", "Lakers", "Broadway", etc.).
   expected_output: >
     You should return a python dictionary with the following keys:
     - 'intention': pass on the same value you received.
     - 'preferences': the same dictionary of user preferences you received.
-    - 'output':
-      - For 'recommendation': a natural-language summary of the top 5 recommended events with available tickets.
-      - For 'more_info': a natural-language detailed description of the referenced event.
+    - 'performers': a python dictionary of performers/groups with short descriptions. This can be just one if the user specifically says a performers
   async_execution: false
   agent: web_search_expert
   context:
     - conversation_task
 
+search_providers_task:
+  description: >
+    Use your available tools to fetch events by performer names and filter them by location and date range.
+    Present the results in clear, human-readable bullet points.
+  expected_output: >
+    Return a Python dictionary with the following keys:
+    - 'intention': pass on the same value you received.
+    - 'preferences': the same dictionary of user preferences you received.
+    - 'output': In natural language, a bullet list of the recommended performers and descriptions. Followed by the top 5 recommended events with available tickets.
+      Include event name, date, venue, location, and the mytickets.com ticket link.
+  async_execution: false
+  agent: web_search_expert
+  context:
+    - performer_search_task
+
+### OLD (maybe useful): Directly takes users preferences, searches for events, and outputs recommendations / event info. Could still be useful if ever decide to search for performers and events at the same time
+# search_and_present_task:
+#   description: >
+#     Based on the user's intention:
+#     - If 'recommendation': Use the extracted preferences to conduct a web search, extract ticket info,
+#     validate, rank, and present the top 5 events in natural language with bullet points including event name,
+#     date, location, price, a link, and short description.
+#     - If 'more_info': Use the referenced event name from the conversation, and if relevant, the stored recommendation list "{recommendations}"
+#       and preferences "{preferences}" to identify the event. Conduct a focused web search and scraping to provide
+#       detailed event information (date, time, venue, performers, seating, and price breakdown).
+#   expected_output: >
+#     You should return a python dictionary with the following keys:
+#     - 'intention': pass on the same value you received.
+#     - 'preferences': the same dictionary of user preferences you received.
+#     - 'output':
+#       - For 'recommendation': a natural-language summary of the top 5 recommended events with available tickets.
+#       - For 'more_info': a natural-language detailed description of the referenced event.
+#   async_execution: false
+#   agent: web_search_expert
+#   context:
+#     - conversation_task
+
+### OLD OLD: just fetches events
 # fetch_events_data_task:
 #   description: >
 #     Conduct web searches and extract detailed ticket information based on user preferences.
@@ -50,6 +95,7 @@ search_and_present_task:
 #   context:
 #     - conversation_task
 
+### OLD OLD: just validates and ranks events
 # filter_and_rank_task:
 #   description: >
 #     Validate the reasonability of ticket results and rank the top 5 based on relevance
@@ -62,6 +108,7 @@ search_and_present_task:
 #   context:
 #     - fetch_events_data_task
 
+### OLD OLD: just presents results in human language
 # present_results_task:
 #   description: >
 #     Present the ranked event results to the user in natural language.
@@ -73,23 +120,3 @@ search_and_present_task:
 #   agent: conversation_specialist
 #   context:
 #     - filter_and_rank_task
-
-# fetch_event_details_task:
-#   description: >
-#     Given the user's follow-up "{user_input}", identify which event the user is referring to—
-#     whether from previous recommendations or a new event mentioned in the current message.
-#     If available, use stored recommendation list "{recommendations}" and user preferences "{preferences}" to identify the event and enrich the detail.
-#     Then conduct a focused search and scraping to gather details such as
-#     date, time, venue, performers, price range, and seating.
-#   expected_output: >
-#     A natural-language summary with detailed information for the referenced event.
-#     The output should make clear which event is being elaborated on, with enriched context
-#     from memory and fresh lookup.
-#   input_schema:
-#     user_input: str
-#     recommendations: list
-#     preferences: dict
-#   async_execution: false
-#   agent: scraping_specialist
-#   context:
-#     - conversation_task

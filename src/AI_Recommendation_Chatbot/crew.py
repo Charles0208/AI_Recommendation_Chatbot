@@ -3,6 +3,7 @@ from crewai import Agent, Crew, Process, Task
 from crewai.project import CrewBase, agent, crew, task
 from crewai_tools import SerperDevTool
 from crewai_tools import ScrapeWebsiteTool
+from src.AI_Recommendation_Chatbot.tools.search_victorylive_events import VictoryLiveEventSearchTool
 
 @CrewBase
 class AI_Recommendation_ChatbotCrew():
@@ -18,7 +19,7 @@ class AI_Recommendation_ChatbotCrew():
     def web_search_expert(self) -> Agent:
         return Agent(
             config=self.agents_config['web_search_expert'],
-            tools=[SerperDevTool(), ScrapeWebsiteTool()],
+            tools=[SerperDevTool(), ScrapeWebsiteTool(), VictoryLiveEventSearchTool()],
         )
 
     # @agent
@@ -35,10 +36,17 @@ class AI_Recommendation_ChatbotCrew():
         )
 
     @task
-    def search_and_present_task(self) -> Task:
+    def performer_search_task(self) -> Task:
         return Task(
-            config=self.tasks_config['search_and_present_task'],
+            config=self.tasks_config['performer_search_task'],
             tools=[SerperDevTool(), ScrapeWebsiteTool()],
+        )
+        
+    @task
+    def search_providers_task(self) -> Task:
+        return Task(
+            config=self.tasks_config['search_providers_task'],
+            tools=[VictoryLiveEventSearchTool()],
         )
 
     # @task
@@ -62,5 +70,5 @@ class AI_Recommendation_ChatbotCrew():
             tasks=self.tasks, # Automatically created by the @task decorator
             process=Process.sequential,
             memory=True, # Enables short-term, long-term, and entity memory
-            verbose=False,
+            verbose=True,
         )

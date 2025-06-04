@@ -2,6 +2,7 @@
 import sys
 import time
 import json
+from datetime import datetime
 from AI_Recommendation_Chatbot.crew import AI_Recommendation_ChatbotCrew
 
 # This main file is intended to be a way for your to run your
@@ -33,6 +34,7 @@ def run():
 
         inputs = {
             "user_input": user_input, 
+            "date_time": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
             "recommendations":session_memory.get("recommendations"), 
             "preferences":session_memory.get("preferences"),
             "conversation_history": session_memory["conversation_history"],
@@ -48,12 +50,12 @@ def run():
             session_memory["conversation_history"].append({"role": "user", "message": user_input})
             session_memory["conversation_history"].append({"role": "bot", "message": result["output"]})
             session_memory["conversation_history"] = session_memory["conversation_history"][-MAX_HISTORY:]
-            if result['intention'] == 'recommendation':
-                session_memory["recommendations"] = result["output"]
+            
+            session_memory["recommendations"] = result["output"]
             
             end = time.time()
+            print("Bot:\n", result['output'], "\n")
             print(f"\n===🔁 Total runtime: {end - start:.2f} seconds===\n")
-            print("Bot:", result['output'], "\n")
         except Exception as e:
             print(f"Error: {e}")
     
