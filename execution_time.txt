@@ -14,3 +14,10 @@ Streamline Tasks (5->3 tasks and 4->3 agents) (gpt-4.1-mini):
 2. 🔁 Total runtime: 70.40 seconds: I'm looking for concerts or NBA games in NYC this weekend. Preferably something popular or headlined by a major artist.
 3. 🔁 Total runtime: 76.10 seconds: I'm looking for concerts or NBA games in NYC this weekend. Preferably something popular or headlined by a major artist.
 4. 🔁 Total runtime: 50.43 seconds: I'm looking for a romantic broadway show to watch in the next weeks. Can you give me some recommendations?
+
+Restructuring of Workflow (2 agents, 2 tasks) (gpt-4.1-mini):
+1. 🔁 Total runtime: 26.01 seconds: I'm looking for concerts or NBA games in NYC this weekend. Preferably something popular or headlined by a major artist.
+2. 🔁 Total runtime: 44.82 seconds: I'm looking for concerts or NBA games in NYC this weekend. Preferably something popular or headlined by a major artist.
+3. 🔁 Total runtime: 41.25 seconds: I'm looking for concerts or NBA games in NYC this weekend. Preferably something popular or headlined by a major artist.
+4. 🔁 Total runtime: 54.14 seconds: I'm looking for a romantic broadway show to watch in the next weeks. Can you give me some recommendations?
+5. 🔁 Total runtime: 40.99 seconds: I'm looking for a romantic broadway show to watch in the next weeks. Can you give me some recommendations?
