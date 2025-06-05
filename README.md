@@ -62,9 +62,11 @@ The AI_Recommendation_Chatbot Crew is composed of multiple AI agents, each with 
 - Modify `src/AI_Recommendation_Chatbot/crew.py` to add logic, tools and specific args
 - Modify `src/AI_Recommendation_Chatbot/main.py` to add custom inputs for agents and tasks
 
-## Online resource
+## Online resources
 
 For a video tutorial of the above steps, use this playlist: https://youtube.com/playlist?list=PLpkzjZ2JCjKJYqKavdl87BWotEaqbzjRt&si=dGBPnn2CBr94ll4p
+
+Document reporting status of project as of June 4, 2025: https://docs.google.com/document/d/1RXC2KGY-e-u5kagFCzvJYKm9FyNzR3ez-0PcP_oAGLY/edit?usp=sharing
 
 ## Support
 

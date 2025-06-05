@@ -23,9 +23,9 @@ class VictoryLiveEventSearchTool(BaseTool):
 
     def _run(self, performers: List[str], location: Optional[str] = None, start_date: Optional[str] = None, end_date: Optional[str] = None) -> str:
         all_events = []
-        local_tz = tz.tzlocal()  # or use pytz.timezone("US/Eastern") if you want to force a specific zone
+        local_tz = tz.tzlocal()  # gets local timezone
 
-        start = datetime.fromisoformat(start_date).replace(tzinfo=local_tz) if start_date else None
+        start = datetime.fromisoformat(start_date).replace(tzinfo=local_tz) if start_date else None # ensures consistent timezone
         end = datetime.fromisoformat(end_date).replace(tzinfo=local_tz) if end_date else None
 
         for performer in performers:
@@ -80,7 +80,7 @@ class VictoryLiveEventSearchTool(BaseTool):
         # Rank by popularity
         all_events.sort(key=lambda x: x["score"], reverse=True)
 
-        # Format output
+        # Format output. Top 5 results
         result = "\n".join([
             f"- {e['title']}"
             f"  Date: {e['date']}"
@@ -92,6 +92,7 @@ class VictoryLiveEventSearchTool(BaseTool):
 
         return result
     
+    # temporary solution to slight difference in location names (e.g. New York City vs New York)
     @staticmethod
     def normalize(loc: str) -> str:
         return loc.lower().replace("city", "").strip()

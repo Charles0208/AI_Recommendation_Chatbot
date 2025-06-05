@@ -23,7 +23,7 @@ def run():
     Run the crew with the full conversation.
     """
     print("Welcome to the chatbot! Type 'exit' to stop.")
-    crew_instance = AI_Recommendation_ChatbotCrew()
+    crew_instance = AI_Recommendation_ChatbotCrew() # Creates crew instance
     crew = crew_instance.crew()
     
     while True:
@@ -32,6 +32,7 @@ def run():
             print("Goodbye!")
             break
 
+        # Sets inputs
         inputs = {
             "user_input": user_input, 
             "date_time": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
@@ -46,14 +47,16 @@ def run():
             raw_output_str = dict(result)['raw']
             result = json.loads(raw_output_str)
 
+            # Updates memory
             session_memory["preferences"] = result["preferences"]
+            session_memory["recommendations"] = result["output"]
             session_memory["conversation_history"].append({"role": "user", "message": user_input})
             session_memory["conversation_history"].append({"role": "bot", "message": result["output"]})
             session_memory["conversation_history"] = session_memory["conversation_history"][-MAX_HISTORY:]
             
-            session_memory["recommendations"] = result["output"]
-            
             end = time.time()
+            
+            # Outputs recommendations
             print("Bot:\n", result['output'], "\n")
             print(f"\n===🔁 Total runtime: {end - start:.2f} seconds===\n")
         except Exception as e:
